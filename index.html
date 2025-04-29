@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Oreo's Mischief Tracker 🐰✨</title>
+  <style>
+    /* ... same CSS as before, unchanged ... */
+    
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #63e5ff;
+      color: #5c4033;
+      margin: 20px;
+      padding-bottom: 50px;
+    }
+
+    h1, h2, h3 {
+      color: #8b5e3c;
+      text-shadow: 1px 1px #f0e5de;
+    }
+
+    /* Cute Buttons */
+    button {
+      margin: 4px;
+      padding: 6px 12px;
+      background: linear-gradient(145deg, #ffe1b3, #ffc09f);
+      border: 2px solid #ffb89f;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #5c4033;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      box-shadow: 2px 2px 5px #ffe8d6;
+    }
+    button:hover {
+      background: linear-gradient(145deg, #ff7b54, #ffc09f);
+      color: white;
+      border-color: #ff7b54;
+      transform: scale(1.05) rotate(-2deg);
+    }
+
+    /* Fun Text Boxes */
+    input[type="text"] {
+      padding: 7px 10px;
+      margin: 5px;
+      border: 2px solid #c9ada7;
+      border-radius: 12px;
+      background-color: #fffaf0;
+      box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      font-size: 14px;
+    }
+    input[type="text"]:focus {
+      border-color: #ffb89f;
+      box-shadow: 0 0 8px #ffd6a5;
+      outline: none;
+    }
+
+    /* Fun Checkboxes */
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: #e6faff;
+      border: 2px solid #ffb89f;
+      padding: 7px;
+      border-radius: 6px;
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    input[type="checkbox"]:checked {
+      background-color: #ff7b54;
+      border-color: #ff7b54;
+    }
+    input[type="checkbox"]::after {
+      content: "✔️";
+      font-size: 14px;
+      color: white;
+      position: absolute;
+      top: 0px;
+      left: 2px;
+      display: none;
+    }
+    input[type="checkbox"]:checked::after {
+      display: block;
+    }
+    input[type="checkbox"]:hover {
+      transform: scale(1.2);
+    }
+
+    /* Mischief Meter */
+    .mischief-meter {
+      width: 100%;
+      height: 30px;
+      background: linear-gradient(to right, #b7e4c7, #f77f00);
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background-color: rgba(255,255,255,0.5);
+      text-align: center;
+      line-height: 30px;
+      color: #333;
+      font-weight: bold;
+      transition: width 0.5s;
+    }
+
+    .nickname {
+      font-size: 22px;
+      color: #6c584c;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .nickname-controls, .mischief-controls {
+      margin: 10px 0;
+    }
+
+    ul {
+      background-color: #faf4ef;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    li {
+      margin-bottom: 8px;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: #ddd;
+      margin: 10px 0;
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1>🐰 Oreo's Mischief Tracker 🐾</h1>
+
+  <!-- Nicknames -->
+  <div class="nickname" id="nicknameDisplay">Bud Bud 🥔</div>
+  <div class="nickname-controls">
+    <input type="text" id="newNickname" placeholder="➕ Add a new nickname!">
+    <button onclick="addNickname()">➕ Add Nickname</button>
+    <input type="text" id="deleteNickname" placeholder="➖ Delete a nickname!">
+    <button onclick="deleteNickname()">➖ Delete Nickname</button>
+  </div>
+
+  <!-- Mischief Meter -->
+  <h2>😈 Mischief Meter</h2>
+  <div class="mischief-meter">
+    <div class="meter-fill" id="meterFill">0%</div>
+  </div>
+
+  <h3>Today's Mischief Checklist 📝</h3>
+  <div class="mischief-controls">
+    <input type="text" id="newMischief" placeholder="➕ Add Mischief!">
+    <button onclick="addMischief()">➕ Add</button>
+    <input type="text" id="deleteMischief" placeholder="➖ Delete Mischief!">
+    <button onclick="deleteMischief()">➖ Delete</button>
+  </div>
+  <div id="mischiefList"></div>
+
+  <!-- Tricks Section -->
+  <h2>🎓 Tricks Oreo is Learning!</h2>
+  <div id="tricksList"></div>
+
+  <!-- DIY Toys -->
+  <h2>🎁 DIY Toys for Oreo!</h2>
+  <ul>
+    <li>📦 <b>Toilet Paper Roll Treat Puzzle:</b> Stuff hay and tiny treats inside a toilet paper roll and fold the ends closed!</li>
+    <li>🏰 <b>Cardboard Castle:</b> Build tunnels and towers with cardboard boxes for hiding adventures!</li>
+    <li>🥤 <b>Plastic Baby Cups:</b> Stack or hide treats underneath for Oreo to find!</li>
+    <li>🌳 <b>Apple Stick Chew Toy:</b> Safe apple tree branches to nibble!</li>
+  </ul>
+
+  <!-- Birthday Treat Ideas -->
+  <h2>🎉 Birthday Treat Ideas!</h2>
+  <ul>
+    <li>🍌 A tiny piece of banana</li>
+    <li>🌿 Fresh herbs like basil or cilantro</li>
+    <li>🍪 Special hay-based bunny treats</li>
+    <li>🥮 Homemade bunny cookies: ground pellets + banana + hay!</li>
+  </ul>
+
+<script>
+  // --- Nicknames ---
+  let nicknames = JSON.parse(localStorage.getItem('nicknames')) || ["Bud Bud", "Potato", "Big Back Two Piece Chicken Nugget", "Oureus", "Goofball"];
+  let nicknameIndex = 0;
+
+  function updateNickname() {
+    if (nicknames.length > 0) {
+      document.getElementById('nicknameDisplay').innerText = nicknames[nicknameIndex] + " 🐰";
+      nicknameIndex = (nicknameIndex + 1) % nicknames.length;
+    }
+  }
+  setInterval(updateNickname, 3000);
+
+  function saveNicknames() {
+    localStorage.setItem('nicknames', JSON.stringify(nicknames));
+  }
+
+  function addNickname() {
+    const newNick = document.getElementById('newNickname').value.trim();
+    if (newNick && !nicknames.includes(newNick)) {
+      nicknames.push(newNick);
+      saveNicknames();
+      alert(`Nickname "${newNick}" added!`);
+      document.getElementById('newNickname').value = '';
+    }
+  }
+
+  function deleteNickname() {
+    const deleteNick = document.getElementById('deleteNickname').value.trim();
+    const index = nicknames.indexOf(deleteNick);
+    if (index > -1) {
+      nicknames.splice(index, 1);
+      saveNicknames();
+      alert(`Nickname "${deleteNick}" deleted!`);
+      document.getElementById('deleteNickname').value = '';
+    } else {
+      alert("Nickname not found!");
+    }
+  }
+
+  // --- Mischief Tracker ---
+  let mischiefs = JSON.parse(localStorage.getItem('mischiefs')) || [
+    "Chewed something forbidden 🪵",
+    "Tossed a baby cup 🥤",
+    "Climbed on a table 🧗",
+    "Stole hay from the bag 🌾",
+    "Knocked over a treat container 🍪",
+    "Zoomies all over the room 🏃"
+  ];
+
+  function saveMischiefs() {
+    localStorage.setItem('mischiefs', JSON.stringify(mischiefs));
+  }
+
+  function renderMischiefList() {
+    const mischiefList = document.getElementById('mischiefList');
+    mischiefList.innerHTML = '';
+    const savedStates = JSON.parse(localStorage.getItem('mischiefStates')) || {};
+    mischiefs.forEach((item, index) => {
+      const div = document.createElement('div');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = `mischief${index}`;
+      checkbox.checked = savedStates[index] || false;
+      checkbox.onchange = () => {
+        savedStates[index] = checkbox.checked;
+        localStorage.setItem('mischiefStates', JSON.stringify(savedStates));
+        updateMeter();
+      };
+      const label = document.createElement('label');
+      label.htmlFor = `mischief${index}`;
+      label.innerText = item;
+      div.appendChild(checkbox);
+      div.appendChild(label);
+      mischiefList.appendChild(div);
+    });
+    updateMeter();
+  }
+
+  function addMischief() {
+    const newMischief = document.getElementById('newMischief').value.trim();
+    if (newMischief && !mischiefs.includes(newMischief)) {
+      mischiefs.push(newMischief);
+      document.getElementById('newMischief').value = '';
+      saveMischiefs();
+      renderMischiefList();
+    }
+  }
+
+  function deleteMischief() {
+    const deleteMischief = document.getElementById('deleteMischief').value.trim();
+    const index = mischiefs.indexOf(deleteMischief);
+    if (index > -1) {
+      mischiefs.splice(index, 1);
+      document.getElementById('deleteMischief').value = '';
+      saveMischiefs();
+      renderMischiefList();
+    } else {
+      alert("Mischief not found!");
+    }
+  }
+
+  function updateMeter() {
+    const total = mischiefs.length;
+    const checked = document.querySelectorAll('#mischiefList input:checked').length;
+    const percentage = total > 0 ? Math.round((checked / total) * 100) : 0;
+    const fill = document.getElementById('meterFill');
+    fill.style.width = percentage + '%';
+    fill.innerText = percentage + '% Mischief!';
+  }
+
+  // --- Tricks Tracker ---
+  const defaultTricks = [
+    { name: "Stand up on cue 🧍‍♂️", status: "Not started" },
+    { name: "Spin in a circle 🔄", status: "Not started" },
+    { name: "Come when called 📣", status: "Not started" },
+    { name: "Target training (touch a ball) 🎯", status: "Not started" },
+    { name: "Give a high five 🖐️", status: "Not started" }
+  ];
+
+  const tricks = JSON.parse(localStorage.getItem('oreoTricks')) || defaultTricks;
+
+  function saveTricks() {
+    localStorage.setItem('oreoTricks', JSON.stringify(tricks));
+  }
+
+  function renderTricks() {
+    const tricksList = document.getElementById('tricksList');
+    tricksList.innerHTML = "";
+    tricks.forEach((trick, index) => {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <b>${trick.name}</b> - <span>${trick.status}</span><br>
+        <button onclick="updateTrick(${index}, 'Learning')">📖 Learning</button>
+        <button onclick="updateTrick(${index}, 'Mastered')">🏆 Mastered</button>
+        <hr>
+      `;
+      tricksList.appendChild(div);
+    });
+  }
+
+  function updateTrick(index, status) {
+    tricks[index].status = status;
+    saveTricks();
+    renderTricks();
+  }
+
+  // Initial load
+  renderMischiefList();
+  renderTricks();
+</script>
+
+</body>
+</html>
